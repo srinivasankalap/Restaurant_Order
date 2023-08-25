@@ -31,7 +31,7 @@ function store(e){
         Description:describe,
         Amount:amount,
     }
-    axios.post("https://crudcrud.com/api/5a47dc513e744ef8b33214e8b19ea8cc/orders",myObj)
+    axios.post("https://crudcrud.com/api/173bd42e51854b0da64025da8a55f992/orders",myObj)
     .then((response)=>{
         addItem(response.data);
     })
@@ -61,15 +61,21 @@ function addItem(item){
 function removeExpense(deleteButton,category){
         var li=deleteButton.parentElement;
         let expenseText = li.textContent;
-        let describe = expenseText.split(' ').slice(3,5).join(' ');
+        let temp=expenseText.split(' ');
+        let describe="";
+        if (temp[4]!='Delete'){
+            describe=temp.slice(3,5).join(" ");
+        }else{
+            describe=temp.slice(3,4).join(" ");
+        }
         console.log(describe);
-        axios.get("https://crudcrud.com/api/5a47dc513e744ef8b33214e8b19ea8cc/orders")
+        axios.get("https://crudcrud.com/api/173bd42e51854b0da64025da8a55f992/orders")
         .then((response)=>{
             console.log(response);
             const itemDelete=response.data.find(item => item.Description==describe)
             if (itemDelete){
                 const itemId=itemDelete._id;
-                axios.delete(`https://crudcrud.com/api/5a47dc513e744ef8b33214e8b19ea8cc/orders/${itemId}`)
+                axios.delete(`https://crudcrud.com/api/173bd42e51854b0da64025da8a55f992/orders/${itemId}`)
                 .then(()=>{
                     if (category=='table1'){
                         itemList1.removeChild(li);
@@ -90,7 +96,7 @@ function removeExpense(deleteButton,category){
 }
 
 window.addEventListener("DOMContentLoaded",()=>{
-    axios.get("https://crudcrud.com/api/5a47dc513e744ef8b33214e8b19ea8cc/orders")
+    axios.get("https://crudcrud.com/api/173bd42e51854b0da64025da8a55f992/orders")
     .then((response)=>{
         for (var i=0;i<response.data.length;i++){
             addItem(response.data[i]);
